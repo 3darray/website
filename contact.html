@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tia and the Toasters</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
+</head>
+
+<body>
+    <!-- The Modal -->
+    <div id="message-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <p id="modal-content"></p>
+        </div>
+    </div>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="logo">Tia and the Toasters</div>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <!-- <li><a href="#about">About Us</a></li>
+      <li><a href="#services">Services</a></li> -->
+            <li><a href="introduction.html">Introduction</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="services.html">Services</a></li>
+            <li><a href="media.html">Media</a></li>
+            <li><a href="testimonials.html">Testimonials</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+        <div class="social-icons">
+            <a href="https://www.facebook.com/specialeffectsjax"><img src="images/facebook_2.png" alt="Facebook"></a>
+            <a href="https://www.instagram.com/sfxbandjax/"><img src="images/instagram-icon.png" alt="Instagram"></a>
+        </div>
+    </nav>
+
+    <!-- <div id="home" class="hero">
+        <img src="images/group-shot.png" alt="Wedding Band Performance" class="hero-image">
+        <div class="hero-overlay">
+            <br></br>
+            <br></br>
+            <br></br>
+            <br></br>
+            <h1 class="hero-title">Tia and the Toasters</h1>
+            <p class="hero-tagline">Making Your Special Day Unforgettable</p>
+            <p></p>
+            <div>
+                <button id="toggle-music-button" class="cta-button">Play Our Demo</button>
+                <div>
+                    <audio id="background-music" src="audio/i-wish.mp3" controls loop></audio>
+
+                </div>
+            </div>
+            <br></br>
+            <a href="#contact" class="cta-button">Book Now</a>
+            <a href="#video" class="cta-button">Watch Video</a>
+        </div>
+    </div> -->
+
+    <!-- Contact Page -->
+    <section id="contact" class="contact">
+        <h2>Contact Us</h2>
+        <!-- reCAPTCHA widget -->
+        <div class="g-recaptcha" data-sitekey="6LeSMgEqAAAAABewSXGBotnMCje8uPfQQ7ZWZNio"></div>
+        <form class="contact-form" action="https://api.web3forms.com/submit" method="POST">
+
+            <input type="hidden" name="access_key" value="60823ace-bd42-4ccd-8210-abb6eec56542">
+            <label for="name">Name</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="phone">Phone</label>
+            <input type="tel" id="phone" name="phone">
+
+            <label for="date">Event Date</label>
+            <input type="date" id="date" name="date">
+
+            <label for="message">Message</label>
+            <textarea id="message" name="message" rows="4" required></textarea>
+            <br></br>
+
+
+
+
+            <button type="submit">Get in Touch</button>
+            <script>
+
+
+                // Close the modal when the user clicks on <span> (x)
+                document.querySelector('.close').addEventListener('click', function () {
+                    document.getElementById('message-modal').style.display = 'none';
+                });
+
+
+
+                // Close the modal when the user clicks anywhere outside of the modal
+                window.addEventListener('click', function (event) {
+                    const modal = document.getElementById('message-modal');
+                    if (event.target == modal) {
+                        modal.style.display = 'none';
+                    }
+                });
+            </script>
+        </form>
+        <div class="contact-details">
+            <p>Phone: <a href="tel:+1234567890">+1 234 567 890</a></p>
+            <p>Email: <a href="mailto:info@harmonyband.com">info@tiaandthetoasters.com</a></p>
+        </div>
+    </section>
+
+    <!-- JavaScript to Handle Button Click and Set Default Volume -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+
+            //const audio = document.getElementById('background-music');
+            //const button = document.getElementById('toggle-music-button');
+            //audio.volume = 0.5;  // Set the default volume to 50%
+
+            const form = document.querySelector('.contact-form');
+            form.addEventListener('submit', function (event) {
+                event.preventDefault();  // Prevent the default form submission behavior
+                //alert('loaded');
+
+
+                const recaptchaResponse = grecaptcha.getResponse();
+
+                //alert('loaded 2');
+                if (!recaptchaResponse) {
+                    showModal('Please complete the reCAPTCHA.');
+                    return;
+                }
+
+                const formData = new FormData(form);
+                //formData.append('g-recaptcha-response', recaptchaResponse);
+
+
+                // Use Web3Forms to send the form data
+                fetch(form.action, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                })
+                    .then(response => {
+                        if (response.ok) {
+                            form.reset();  // Clear the form fields
+                            showModal('Thank you for contacting us! We will get back to you soon.');
+                        } else {
+                            alert('not ok');
+                            response.json().then(data => {
+                                if (Object.hasOwn(data, 'errors')) {
+                                    showModal(data["errors"].map(error => error["message"]).join(", "));
+                                } else {
+                                    showModal('There was a problem with your submission. Please try again.');
+                                }
+                            });
+                        }
+                    }).catch(error => {
+                        alert('error');
+                        console.error('Error:', error);
+                        showModal('There was a problem with your submission. Please try again.');
+                    });
+            });
+
+            function showModal(message) {
+                const modal = document.getElementById('message-modal');
+                const modalContent = document.getElementById('modal-content');
+                modalContent.textContent = message;
+                modal.style.display = 'block';
+            }
+
+            // button.addEventListener('click', function () {
+            //     if (audio.paused) {
+            //         audio.play();
+            //         button.textContent = 'Pause Demo';
+            //     } else {
+            //         audio.pause();
+            //         button.textContent = 'Play Our Demo';
+            //     }
+            // });
+        });
+    </script>
+</body>
+
+</html>
