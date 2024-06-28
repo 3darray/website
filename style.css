@@ -52,8 +52,7 @@ body {
 }
 
 .hero-image {
-  width: 100%;
-  height: auto;
+  width: 82%;
 }
 
 .hero-overlay {
@@ -64,8 +63,8 @@ body {
 }
 
 .hero-title {
+  margin-top: 75%;
   font-size: 4em;
-  margin: 0;
 }
 
 .hero-tagline {
@@ -82,31 +81,33 @@ body {
   border-radius: 5px;
 }
 
+.audio-control {
+    padding-bottom: 30px;
+  }
+
 .navbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  list-style: none;
   background-color: #333;
-  padding: 10px 20px;
+  display:flex; 
+  flex-direction: row; 
+  justify-content: center; 
+  align-items: center";
 }
 
-.navbar .logo {
+.logo {
   color: white;
   font-size: 1.5em;
 }
 
-.navbar .nav-links {
-  list-style: none;
+.nav-links {
   display: flex;
-  margin: 0;
-  padding: 0;
 }
 
-.navbar .nav-links li {
+li {
   margin-left: 20px;
 }
 
-.navbar .nav-links a {
+a {
   color: white;
   text-decoration: none;
   font-size: 1.2em;
@@ -124,6 +125,11 @@ body {
   margin-left: auto;
   margin-right: auto;
   width: 50%;
+}
+
+h1 {
+  font-size: 2.5em;
+  margin-bottom: 20px;
 }
 
 h2 {
